@@ -1,0 +1,72 @@
+﻿
+@inject Cocina.Interfas.RecipeInterface _recipesService
+@inject Cocina.Interfas.AlertsInterface _alert
+<section class="section-card">
+    <h1>
+        @if (removeRecipe)
+        {
+            <a class="text-red" @onclick="() => RecipeRemove(recipe)">@recipe.Title</a>
+        }
+        else
+        {
+            @recipe.Title
+        }
+    </h1>
+    <ul>
+        <li>
+            Principal ingrediente: @recipe.PrincipalIngredient
+        </li>
+        <li>
+            Tiempo: @recipe.Time
+        </li>
+        <li>
+            Cantidad de personas: @recipe.Person
+        </li>
+    </ul>
+    <article class="grid">
+        <div>
+            <button class="w-100 btn-purple" @onclick="()=>recipe.VisileIngredients = !recipe.VisileIngredients"> @(!recipe.VisileIngredients ? " Mostrar Ingredientes" : "Ocultar Ingredientes") </button>
+            @if (recipe.VisileIngredients)
+            {
+                <ul class="colum-4">
+                    @foreach (var ingredients in recipe.Ingredients)
+                    {
+                        <li>@ingredients.Name</li>
+                    }
+                </ul>
+            }
+        </div>
+        <div>
+            <button class="w-100 btn-purple" @onclick="()=>recipe.VisibleRepairs = !recipe.VisibleRepairs"> @(!recipe.VisibleRepairs ? " Mostrar pasos" : "Ocultar pasos") </button>
+            @if (recipe.VisibleRepairs)
+            {
+                @foreach (var repair in recipe.Repairs)
+                {
+                    <h2>@repair.Passed</h2>
+                    <p>@repair.Description</p>
+                }
+            }
+        </div>
+    </article>
+
+</section>
+
+@code {
+    [Parameter]
+    public Cocina.Data.Dto.RecipeDto recipe { get; set; }
+    [Parameter]
+    public bool removeRecipe { get; set; }
+    [Parameter]
+    public Func<Task> Clear { get; set; }
+
+    public async Task RecipeRemove(Cocina.Data.Dto.RecipeDto recipeRemove)
+    {
+        string text = $"Borrar: {recipeRemove.Title}";
+        bool response = await _alert.AlertYesOrNot(text, "Estas seguro de borrar la receta", "Si", "No");
+        if (response)
+        {
+            await _recipesService.RemoveRecipe(recipeRemove.Id);
+            await Clear.Invoke();
+        }
+    }
+}

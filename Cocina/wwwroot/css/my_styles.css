@@ -1,0 +1,338 @@
+﻿.m-b-2 {
+    margin-bottom: 2rem;
+}
+.m-b-1 {
+    margin-bottom: 1rem;
+}
+.btn-rem-2 {
+    width: 8rem;
+    height: 2rem;
+    min-width:8rem;
+}
+
+.btn-rem {
+    width: 4rem;
+    height: 2rem;
+    min-width: 4rem;
+}
+
+.text-red {
+    color: red;
+    text-decoration: none;
+}
+
+.grid {
+    display: grid;
+    grid-auto-flow: dense;
+    grid-row-gap: 2rem;
+    grid-column-gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%,15rem), 1fr));
+}
+.grid-form-2 {
+    display: grid;
+    grid-row-gap: 1rem;
+    grid-column-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%,12rem), 1fr));
+}
+.grid-form {
+    display: grid;
+    grid-row-gap: 1rem;
+    grid-column-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, 1fr);
+}
+
+.colum-max {
+    grid-column: 1/-1;
+}
+
+.colum-12 {
+    grid-column: span 12;
+}
+
+.colum-10 {
+    grid-column: span 10;
+}
+
+.colum-8 {
+    grid-column: span 8;
+}
+.colum-6 {
+    grid-column: span 6;
+}
+.colum-5 {
+    grid-column: span 5;
+}
+.colum-3 {
+    grid-column: span 3;
+}
+
+.colum-3 {
+    grid-column: span 3;
+}
+
+.colum-2 {
+    grid-column: span 2;
+}
+
+.flex-mb-2 {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.flex-mb-1 {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+.flex-right {
+    margin-left: auto;
+}
+
+.input-form {
+    border-radius: 50px;
+    padding: 10px;
+}
+
+    .input-form:hover {
+        box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .input-form:active {
+        box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .text-area-form {
+    border-radius: 20px;
+    padding: 10px;
+    height:5rem;
+    max-height:8rem;
+    min-height:5rem;
+}
+
+        .text-area-form :hover {
+            box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .text-area-form :active {
+            box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+        }
+
+.label-form {
+    font-weight: bold;
+    font-size: large;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.section-card {
+    box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.w-100 {
+    width: 100%;
+    height: 2rem;
+}
+
+.w-80 {
+    width: 80%;
+    height: 2rem;
+}
+
+.w-50 {
+    width: 50%;
+    height: 2rem
+}
+
+.w-25 {
+    width: 25%;
+    height: 2rem
+}
+
+.w-20 {
+    width: 20%;
+    height: 2rem;
+}
+.h-2 {
+    height: 2rem;
+}
+.btn-lemon {
+    background-color: white;
+    border: 1px solid rgba(20, 232, 57, 0.8);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+}
+
+    .btn-lemon:hover {
+        background-color: white;
+        border: 2px solid rgba(33, 206, 64, 0.8);
+        box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-lemon:active {
+        background-color: rgba(20, 232, 57, 0.4);
+        border: 1px solid rgba(33, 206, 64, 0.8);
+        box-shadow: initial 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+.btn-cyan {
+    background-color: white;
+    border: 1px solid rgba(46, 198, 209, 0.8);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+}
+
+    .btn-cyan:hover {
+        background-color: white;
+        border: 2px solid rgba(24, 213, 228, 0.8);
+        box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-cyan:active {
+        background-color: rgba(46, 198, 209, 0.4);
+        border: 1px solid rgba(24, 213, 228, 0.8);
+        box-shadow: initial 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+.btn-orange {
+    background-color: white;
+    border: 1px solid rgba(228, 128, 24, 0.8);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+}
+
+    .btn-orange:hover {
+        background-color: white;
+        border: 2px solid rgba(247, 130, 9, 0.8);
+        box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-orange:active {
+        background-color: rgba(228, 128, 24, 0.4);
+        border: 1px solid rgba(247, 130, 9, 0.8);
+        box-shadow: initial 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+.btn-purple {
+    background-color: white;
+    border: 1px solid rgba(218, 113, 251, 0.5);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+}
+
+    .btn-purple:hover {
+        background-color: white;
+        border: 2px solid rgba(218, 113, 251, 0.8);
+        box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-purple:active {
+        background-color: rgba(218, 113, 251, 0.4);
+        border: 1px solid rgba(218, 113, 251, 0.8);
+        box-shadow: initial 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+.btn-red {
+    background-color: white;
+    border: 1px solid rgba(220, 21, 124, 0.5);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+}
+
+    .btn-red:hover {
+        background-color: white;
+        border: 2px solid rgba(201, 37, 122, 0.8);
+        box-shadow: initial 3px 3px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-red:active {
+        background-color: rgba(220, 21, 124, 0.4);
+        border: 1px solid rgba(201, 37, 122, 0.8);
+        box-shadow: initial 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+.circle {
+    border-radius: 50%;
+    width:30px;
+}
+.loading {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 12rem;
+    height: 12rem;
+    margin: 0 auto;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.m-r-1 {
+    margin-right: 1em;
+}
+
+.toggle {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.toggle-switch {
+    display: inline-block;
+    background: #ccc;
+    border-radius: 16px;
+    width: 58px;
+    height: 32px;
+    position: relative;
+    vertical-align: middle;
+    transition: background 0.25s;
+}
+
+    .toggle-switch:before, .toggle-switch:after {
+        content: "";
+    }
+
+    .toggle-switch:before {
+        display: block;
+        background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        transition: left 0.25s;
+    }
+
+.toggle:hover .toggle-switch:before {
+    background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+.toggle-checkbox:checked + .toggle-switch {
+    background: #56c080;
+}
+
+    .toggle-checkbox:checked + .toggle-switch:before {
+        left: 30px;
+    }
+
+.toggle-checkbox {
+    position: absolute;
+    visibility: hidden;
+}
+
+.toggle-label {
+    margin-left: 5px;
+    position: relative;
+    top: 2px;
+}

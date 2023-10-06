@@ -1,0 +1,170 @@
+﻿@page "/recipe"
+@using Cocina.Data;
+@using Cocina.Service;
+@using System.Timers;
+@using System.Threading;
+@using CommunityToolkit.Maui.Alerts;
+@using CommunityToolkit.Maui.Core;
+@inject Cocina.Interfas.RecipeInterface _recipeRepo;
+@inject Cocina.Interfas.AlertsInterface _alerts;
+@inject IJSRuntime javaScript;
+<h3>Receta</h3>
+
+<section class="m-b-2 grid-form-2">
+    <div>
+        <label class="label-form">Titulo</label>
+        <input class="input-form w-100" @bind-value="recipe.Title" @bind-value:event="oninput" placeholder="Ejemplo: Huevos revueltos con tocino" />
+    </div>
+    <div>
+        <label class="label-form colum-12">Tiempo</label>
+        <input class="input-form w-100" @bind-value="recipe.Time" @bind-value:event="oninput" placeholder="Ejemplo: 45 minutos" />
+    </div>
+    <div>
+        <label class="label-form">Ingrediente principal</label>
+        <input class="input-form w-100" @bind-value="recipe.PrincipalIngredient" @bind-value:event="oninput" placeholder="Ejemplo: huevo"/>
+    </div>
+    <div>
+        <label class="label-form">Cantidad de personas</label>
+        <input class="input-form w-100" type="number" @bind-value="recipe.Person" @bind-value:event="oninput" />
+    </div>
+</section>
+
+
+<hr />
+<ul>
+    @foreach (var item in ingredients)
+    {
+        <li class="m-b-1"> <a class="text-red" @onclick="()=>RemoveIngredient(item)">@item.Name</a></li>
+    }
+</ul>
+<h3>Ingredietes</h3>
+<section class="m-b-1 grid-form-2">
+    <div class="colum-max">
+        <label class="label-form">Ingredient con cantidad</label>
+        <input class="input-form w-100" @bind-value="ingredient.Name" @bind-value:event="oninput" placeholder="Ejemplo: 1kg Tomate"/>
+    </div>
+</section>
+
+<button disabled="@Validate(1)" class="h-2 btn-lemon btn-rem" @onclick="AddIngredient">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+    </svg>
+</button>
+
+<hr />
+<section>
+    @foreach (var item in repairs)
+    {
+        <div class="m-b-1">
+            <a class="text-red" @onclick="()=>RemoveRepair(item)">
+                <h2>@item.Passed </h2>
+            </a>
+            <p>@item.Description</p>
+        </div>
+    }
+</section>
+<h3>Creacion</h3>
+<section class="m-b-1 grid-form-2">
+    <div>
+        <label class="label-form">Pasos</label>
+        <input class="input-form w-100" @bind-value="repair.Passed" @bind-value:event="oninput" placeholder="Ejemplo: Paso 1 batir" />
+    </div>
+    <div>
+        <label class="label-form">Descripcion</label>
+        <textarea class="text-area-form w-100" @bind-value="repair.Description" @bind-value:event="oninput" placeholder="Ejemplo: solo batelo con fuerza y ya">
+        </textarea>
+    </div>
+</section>
+<button disabled="@Validate(2)" class="h-2 btn-lemon btn-rem" @onclick="AddRepiar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+    </svg>
+</button>
+
+<hr />
+<button disabled="@Validate(3)" class="m-b-1 btn-lemon" @onclick="SaveRecipe">Guardar</button>
+
+@code {
+    Cocina.Data.Recipe recipe = new();
+    Cocina.Data.Repair repair = new();
+    List<Cocina.Data.Repair> repairs = new();
+    Cocina.Data.Ingredient ingredient = new();
+    List<Cocina.Data.Ingredient> ingredients = new();
+
+    public void AddRepiar()
+    {
+        repairs.Add(repair);
+        repair = new();
+    }
+    public async Task RemoveRepair(Cocina.Data.Repair repairRemove)
+    {
+        string text = $"Deseas borrar el paso: {repairRemove.Passed}?";
+        bool result = await _alerts.AlertYesOrNot("Paso", text, "Si", "No");
+        if (result)
+            repairs.Remove(repairRemove);
+    }
+
+    public void AddIngredient()
+    {
+        ingredients.Add(ingredient);
+        ingredient = new();
+    }
+    public async Task RemoveIngredient(Cocina.Data.Ingredient ingredientRemove)
+    {
+        string text = $"Deseas borrar {ingredientRemove.Name}?";
+        bool result = await _alerts.AlertYesOrNot("Ingrediente", text, "Si", "No");
+        if (result)
+            ingredients.Remove(ingredientRemove);
+    }
+
+    public async void SaveRecipe()
+    {
+        if (ingredients.Count == 0)
+            await _alerts.AlertSimple("No deberias aver pasado esto", "No hay ingredientes");
+        if (repairs.Count == 0)
+            await _alerts.AlertSimple("No deberias aver pasado esto", "No hay pasos de la reseta");
+        else
+        {
+            string text = $"Estas seguro que deseas guardar la receta {recipe.Title}";
+            bool result = await _alerts.AlertYesOrNot("Guardar Receta", text, "Si", "No");
+            if (result)
+            {
+                recipe.Ingredients = ingredients;
+                recipe.Repairs = repairs;
+                await _recipeRepo.AddRecipe(recipe);
+                recipe = new();
+                ingredients = new();
+                repairs = new();
+                ingredient = new();
+                repair = new();
+                await javaScript.InvokeVoidAsync("Scroll");
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                await Toast.Make("Guardado con exito",
+                          ToastDuration.Long,
+                          16)
+                    .Show(cancellationTokenSource.Token);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public bool Validate(int option)
+    {
+        if (option == 1)
+            return string.IsNullOrWhiteSpace(ingredient.Name);
+        if (option == 2)
+            return (string.IsNullOrWhiteSpace(repair.Passed) || string.IsNullOrWhiteSpace(repair.Description));
+        if (option == 3)
+        {
+            return (
+            string.IsNullOrWhiteSpace(recipe.Title) ||
+            string.IsNullOrWhiteSpace(recipe.PrincipalIngredient) ||
+            string.IsNullOrWhiteSpace(recipe.Time) ||
+            recipe.Person <= 0 ||
+            repairs.Count == 0 ||
+            ingredients.Count == 0
+            );
+        }
+        return false;
+    }
+}

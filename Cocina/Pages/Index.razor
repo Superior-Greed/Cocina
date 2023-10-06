@@ -1,0 +1,157 @@
+﻿@page "/"
+@using Cocina.Pages.Components
+@inject Cocina.Interfas.RecipeInterface _recipeRepo
+@inject IJSRuntime javaScript;
+<!---"<SurveyPrompt Title="How is Blazor working for you?" /> -->
+@if (carga)
+{
+    <div class="loading"></div>
+}
+else
+{
+    <section class="flex-mb-1">
+        <label class="label-form toggle flex-right">
+            <span class="toggle-label"> Borrar Recetas</span>
+            <input class="toggle-checkbox" type="checkbox" checked="@removeRecipe" @bind-value="removeRecipe" @bind-value:event="oninput" />
+            <div class="toggle-switch"></div>
+        </label>
+    </section>
+
+    <section class="m-b-2 grid-form">
+        <label class="label-form colum-12">Buscador: </label>
+        <input type="text" @bind-value="recipeSearch" @bind-value:event="oninput" class="w-100 input-form colum-8" placeholder="Buscardor por ingrediente" /> 
+        <button class="w-100 btn-lemon colum-2" disabled="@(recipeSearch.Trim().Length==0)" @onclick="Search">Buscar</button>
+        <button class="w-100 btn-red colum-2" @onclick="Clear">limpiar</button>
+    </section>
+
+    @foreach (var recipe in recipe_list)
+    {
+        <CardRecipe recipe="recipe" removeRecipe="removeRecipe" Clear="ClearOption"></CardRecipe>
+    }
+    <section class="flex-mb-2">
+        <button @onclick="Regresar" disabled="@(page==0)" class="btn-orange btn-rem-2">
+            atras
+        </button>
+        <button @onclick="Cambiar" disabled="@(page==(maxPage-1) || maxPage == 0)" class="btn-cyan btn-rem-2 flex-right">
+            adelante
+        </button>
+    </section>
+
+}
+@code {
+    List<Cocina.Data.Dto.RecipeDto> recipe_list = new();
+    int page = 0;
+    int maxPage = 0;
+    string recipeSearch="";
+    bool search = false;
+    bool carga = true;
+    bool removeRecipe = false;
+
+    public async Task InicialDates(int pages,bool option)
+    {
+        if (option)
+        {
+            var result = await _recipeRepo.GetRecipeList(page);
+            carga = false;
+            maxPage = (int)Math.Ceiling((decimal)result.Item2/20);
+            recipe_list = result.Item1.ToList();
+        }
+        else
+        {
+            var list = recipeSearch.Trim().ToUpper().Split(",");
+            var result = await _recipeRepo.GetRecipe(list, pages);
+            recipe_list = result.Item1.ToList();
+            maxPage = (int)Math.Ceiling((decimal)result.Item2 / 20);
+            carga = false;
+        }
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        page = 0;
+        await InicialDates(page,true);
+    }
+
+    public async Task Cambiar()
+    {
+        if (maxPage > page)
+        {
+            carga = true;
+            page++;
+            if (string.IsNullOrWhiteSpace(recipeSearch) && !search) //recipeSearch.Trim() == "" && !search)
+                await InicialDates(page, true);
+            else
+                await InicialDates(page, false);
+        }
+        await javaScript.InvokeVoidAsync("Scroll");
+    }
+
+    public async Task Regresar()
+    {
+        if (page > 0)
+        {
+            carga = true;
+            page--;
+            if (!search)
+                await InicialDates(page,true);
+            else
+                await InicialDates(page, false);
+        }
+        await javaScript.InvokeVoidAsync("Scroll");
+    }
+
+    public bool Exist(string[] list, Ingredient y)
+    {
+        return list.Where(x => y.Name.Contains(x)).Count() > 0;
+    }
+
+    public async Task Search()
+    {
+        // search = true;
+        // carga = true;
+        // removeRecipe = false;
+        // page = 0;
+        Options(1);
+        await InicialDates(page, false);
+    }
+
+    public async Task Clear()
+    {
+        // search = false;
+        // carga = true;
+        // removeRecipe = false;
+        // page = 0;
+        // recipeSearch = "";
+        Options(2);
+        await InicialDates(page, true);
+    }
+
+    public void Options(int option)
+    {
+        carga = true;
+        // removeRecipe = false;
+        page = 0;
+        if (option == 1)
+        {
+            search = true;
+        }
+        else if(option == 2)
+        {
+            search = false;
+            recipeSearch = "";
+        }
+    }
+
+    public async Task ClearOption()
+    {
+        if (!string.IsNullOrWhiteSpace(recipeSearch))
+        {
+            await Search();
+        }
+        else
+        {
+            await Clear();
+        }
+        StateHasChanged();
+    }
+}
