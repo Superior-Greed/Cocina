@@ -1,5 +1,5 @@
 # Cocina
-esta es una applicacion cesilla la fual consta de:
+esta es una applicacion cesilla la cual consta de:
 - de agregar resta
 - mostrarlas
 - borrarlas
